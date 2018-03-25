@@ -8,13 +8,15 @@ import (
 	"os"
 )
 
+var count = &dummy.MutableInt{0}
+
 func genResponse(c *gin.Context) {
 	updateState()
 	genBody(c)
 }
 
 func genBody(c *gin.Context) {
-	dummy.GenBody(c)
+	dummy.GenBody(c, count)
 }
 
 func main() {
@@ -23,7 +25,6 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	count := &dummy.MutableInt{0}
 	initializeState()
 	router := gin.New()
 	router.Use(gin.Logger())
@@ -34,7 +35,7 @@ func main() {
 	//		c.String(http.StatusOK, "Hello World")
 	//	})
 	router.GET("/", func(c *gin.Context) {
-		genResponse(c, count)
+		genResponse(c)
 	})
 
 	router.Run(":" + port)
