@@ -6,7 +6,7 @@ var MAXMEAT = 512
 
 type Person struct {
 	Name  string
-	State int
+	State PersonalState
 }
 
 type PersonalState struct {
@@ -16,8 +16,8 @@ type PersonalState struct {
 func initializeState() {
 	count.Value = 0
 
-	People = append(People, Person{"David", rand.Intn(MAXMEAT)})
-	People = append(People, Person{"Taniqua", rand.Intn(MAXMEAT)})
+	People = append(People, Person{"David", PersonalState{rand.Intn(MAXMEAT)}})
+	People = append(People, Person{"Taniqua", PersonalState{rand.Intn(MAXMEAT)}})
 }
 
 func updateState() {
