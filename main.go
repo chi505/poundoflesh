@@ -16,7 +16,7 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	var count = 0
+	count := dummy.MutableInt(0)
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
