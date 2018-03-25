@@ -3,10 +3,11 @@
 
 {{ .body }}
 
-{{ range .people }}
-{{.Name}}
-{{.State}}
-{{end}
+{{range .people }}
+    {{.Name}}
+    {{.State}}
+    <p>
+{{end}}
 
 </body>
 </html>

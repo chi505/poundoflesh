@@ -18,8 +18,6 @@ type MutableInt struct {
 var count = &MutableInt{0}
 
 func GenBody(c *gin.Context) {
-
-	count.Value++
 	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": strconv.Itoa(count.Value), "people": People})
 }
 func genResponse(c *gin.Context) {
