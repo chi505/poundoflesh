@@ -1,7 +1,6 @@
 package main
 
 import (
-	"dummy"
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 	"log"
@@ -10,13 +9,13 @@ import (
 	"strconv"
 )
 
-var count = &dummy.MutableInt{0}
-
 var People []Person
 
 type MutableInt struct {
 	Value int
 }
+
+var count = &MutableInt{0}
 
 func GenBody(c *gin.Context) {
 
@@ -29,7 +28,7 @@ func genResponse(c *gin.Context) {
 }
 
 func genBody(c *gin.Context) {
-	dummy.GenBody(c, count, People)
+	GenBody(c, count, People)
 }
 
 func main() {
