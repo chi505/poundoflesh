@@ -5,13 +5,24 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 	"log"
+	"net/http"
 	"os"
+	"strconv"
 )
 
 var count = &dummy.MutableInt{0}
 
 var People []Person
 
+type MutableInt struct {
+	Value int
+}
+
+func GenBody(c *gin.Context) {
+
+	count.Value++
+	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": strconv.Itoa(count.Value), "people": People})
+}
 func genResponse(c *gin.Context) {
 	updateState()
 	genBody(c)
