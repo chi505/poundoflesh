@@ -5,9 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 	"log"
-	"net/http"
 	"os"
-	"strconv"
 )
 
 func main() {
@@ -26,7 +24,7 @@ func main() {
 	//		c.String(http.StatusOK, "Hello World")
 	//	})
 	router.GET("/", func(c *gin.Context) {
-		dummy.genBody(c, count)
+		dummy.GenBody(c, count)
 	})
 
 	router.Run(":" + port)
