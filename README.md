@@ -1,2 +1,4 @@
+
 # poundoflesh
-Repo for MEATPUNK game pondoflesh
+
+MEATPUNK manifesto inspired game, packaged as heroku app.
