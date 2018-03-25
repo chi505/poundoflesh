@@ -8,11 +8,11 @@ import (
 )
 
 type MutableInt struct {
-	value int
+	Value int
 }
 
 func GenBody(c *gin.Context, count *MutableInt) {
 
-	count.value++
-	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": strconv.Itoa(count.value)})
+	count.Value++
+	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": strconv.Itoa(count.Value)})
 }
