@@ -1,7 +1,13 @@
 package dummy
 
-import "strconv"
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	_ "github.com/heroku/x/hmetrics/onload"
+	"log"
+	"net/http"
+	"os"
+	"strconv"
+)
 
 type MutableInt struct {
 	value int
