@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-var People []Person
+var People = make([]Person, 0)
 
 type MutableInt struct {
 	Value int
