@@ -10,13 +10,15 @@ import (
 
 var count = &dummy.MutableInt{0}
 
+var People []Person
+
 func genResponse(c *gin.Context) {
 	updateState()
 	genBody(c)
 }
 
 func genBody(c *gin.Context) {
-	dummy.GenBody(c, count)
+	dummy.GenBody(c, count, People)
 }
 
 func main() {
