@@ -1,4 +1,4 @@
-package dummy
+package main
 
 import (
 	"github.com/gin-gonic/gin"
@@ -6,13 +6,3 @@ import (
 	"net/http"
 	"strconv"
 )
-
-type MutableInt struct {
-	Value int
-}
-
-func GenBody(c *gin.Context, count *MutableInt) {
-
-	count.Value++
-	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": strconv.Itoa(count.Value), "people": People})
-}

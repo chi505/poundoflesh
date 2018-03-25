@@ -28,7 +28,7 @@ func genResponse(c *gin.Context) {
 }
 
 func genBody(c *gin.Context) {
-	GenBody(c, count, People)
+	GenBody(c)
 }
 
 func main() {

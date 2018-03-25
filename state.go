@@ -14,7 +14,6 @@ type PersonalState struct {
     Meat int
 }
 
-var People []Person
 
 func initializeState(){
     count.Value = 0
