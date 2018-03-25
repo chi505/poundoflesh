@@ -5,23 +5,21 @@ import "math/rand"
 var MAXMEAT = 512
 
 type Person struct {
-    Name string
-    State PersonalState
-    
+	Name  string
+	State int
 }
 
 type PersonalState struct {
-    Meat int
+	Meat int
 }
 
+func initializeState() {
+	count.Value = 0
 
-func initializeState(){
-    count.Value = 0
-    
-    People = append(People, Person{"David", PersonalState{rand.Intn(MAXMEAT)}})
-    People = append(People, Person{"Taniqua", PersonalState{rand.Intn(MAXMEAT)}})
+	People = append(People, Person{"David", rand.Intn(MAXMEAT)})
+	People = append(People, Person{"Taniqua", rand.Intn(MAXMEAT)})
 }
 
 func updateState() {
-    count.Value++
+	count.Value++
 }
