@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dummy"
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 	"log"
@@ -25,8 +26,7 @@ func main() {
 	//		c.String(http.StatusOK, "Hello World")
 	//	})
 	router.GET("/", func(c *gin.Context) {
-		count++
-		c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": strconv.Itoa(count)})
+		dummy.genBody(c, count)
 	})
 
 	router.Run(":" + port)
