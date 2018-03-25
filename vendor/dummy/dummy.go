@@ -14,5 +14,5 @@ type MutableInt struct {
 func GenBody(c *gin.Context, count *MutableInt) {
 
 	count.Value++
-	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": strconv.Itoa(count.Value)})
+	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": strconv.Itoa(count.Value), "people": People})
 }
