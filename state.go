@@ -18,8 +18,8 @@ type PersonalState struct {
 func initializeState(){
     count.Value = 0
     
-    People.Append(Person{"David", math.rand.Intn(MAXMEAT)})
-    People.Append(Person{"Taniqua", math.rand.Intn(MAXMEAT)})
+    People = append(People, Person{"David", rand.Intn(MAXMEAT)})
+    People = append(People, Person{"Taniqua", rand.Intn(MAXMEAT)})
 }
 
 func updateState() {
