@@ -24,7 +24,7 @@ func main() {
 	//		c.String(http.StatusOK, "Hello World")
 	//	})
 	router.GET("/", func(c *gin.Context) {
-		dummy.GenBody(c, count)
+		dummy.GenBody(c, *count)
 	})
 
 	router.Run(":" + port)
