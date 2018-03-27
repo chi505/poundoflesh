@@ -3,7 +3,7 @@ package main
 import "math/rand"
 import "time"
 
-var MAXMEAT = 512
+var MAXMEAT = 512.0
 var NUMPEOPLE = 16
 
 type Person struct {
@@ -51,8 +51,8 @@ func (world *WorldState) interact(agent *Person, patient *Person) {
 		patient.State.Meat -= meatAmount
 		agent.State.Meat += meatAmount * (1.0 - world.MeatLossFrac)
 	}
-	agent.State.Meat -= 512.0 * world.PerRoundLossFrac
-	patient.State.Meat -= 512.0 * world.PerRoundLossFrac
+	agent.State.Meat -= MAXMEAT * world.PerRoundLossFrac
+	patient.State.Meat -= MAXMEAT * world.PerRoundLossFrac
 
 	if agent.State.Meat < 0 {
 		world.People[agent.ID] = world.MakeNewPerson(agent.ID)
