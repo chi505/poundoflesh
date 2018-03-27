@@ -6,14 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 )
-
-type MutableInt struct {
-	Value int
-}
-
-var count = &MutableInt{0}
 
 func GenBody(c *gin.Context, world WorldState) {
 	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": "Hello World!", "people": world.People})

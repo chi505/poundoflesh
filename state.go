@@ -26,7 +26,6 @@ type WorldState struct {
 }
 
 func (world WorldState) initializeState() {
-	count.Value = 0
 	for i := 0; i < NUMPEOPLE; i++ {
 		People = append(People, MakeNewPerson())
 	}
