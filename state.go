@@ -27,22 +27,21 @@ type WorldState struct {
 
 func (world WorldState) initializeState() {
 	for i := 0; i < NUMPEOPLE; i++ {
-		world.People = append(world.People, MakeNewPerson())
+		world.People = append(world.People, world.MakeNewPerson())
 	}
 }
 
 func (world WorldState) updateState() {
-	count.Value++
 }
 
 func (world WorldState) interact(agent *Person, patient *Person) {
 	meatAmount := agent.PullARequestAmount(patient.State)
 	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
 		patient.State.Meat -= meatAmount
-		agent.State.Meat += meatAmount * (1 - MeatLossFrac)
+		agent.State.Meat += meatAmount * (1 - world.MeatLossFrac)
 	}
-	agent.State.Meat = agent.State.Meat * (1 - PerRoundLossFrac)
-	patient.State.Meat = patient.State.Meat * (1 - PerRoundLossFrac)
+	agent.State.Meat = agent.State.Meat * (1 - world.PerRoundLossFrac)
+	patient.State.Meat = patient.State.Meat * (1 - world.PerRoundLossFrac)
 
 	if agent.State.Meat < 0 {
 		world.People[agent.ID] = world.MakeNewPerson(agent.ID)
@@ -64,7 +63,7 @@ func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount int) bool {
 func (world WorldState) MakeNewPerson(id int) Person {
 	return Person{
 		Name:  MakeNewName(),
-		State: PersonalState{Meat: rand.Intn(NewEntrantMeanMeat * 2), Altruism: rand.Intn(NewEntrantMeanAltruism * 2)},
+		State: PersonalState{Meat: rand.Intn(world.NewEntrantMeanMeat * 2), Altruism: rand.Intn(world.NewEntrantMeanAltruism * 2)},
 		ID:    id}
 
 }
