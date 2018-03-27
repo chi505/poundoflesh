@@ -20,8 +20,8 @@ type PersonalState struct {
 type WorldState struct {
 	MeatLossFrac           float64
 	PerRoundLossFrac       float64
-	NewEntrantMeanMeat     float64
-	NewEntrantMeanAltruism float64
+	NewEntrantMeanMeat     int
+	NewEntrantMeanAltruism int
 	UpdateProbPerRound     float64
 	People                 []*Person
 }
