@@ -13,15 +13,15 @@ type Person struct {
 }
 
 type PersonalState struct {
-	Meat     int //quantity
-	Altruism int //Will be generous with probability (1 + exp(-altruism - meatdelta))^-1
+	Meat     float64 //quantity
+	Altruism int     //Will be generous with probability (1 + exp(-altruism - meatdelta))^-1
 }
 
 type WorldState struct {
 	MeatLossFrac           float64
 	PerRoundLossFrac       float64
-	NewEntrantMeanMeat     int
-	NewEntrantMeanAltruism int
+	NewEntrantMeanMeat     float64
+	NewEntrantMeanAltruism float64
 	UpdateProbPerRound     float64
 	People                 []*Person
 }
@@ -49,8 +49,8 @@ func (world WorldState) interact(agent *Person, patient *Person) {
 		patient.State.Meat -= meatAmount
 		agent.State.Meat += int(float64(meatAmount) * (1 - world.MeatLossFrac))
 	}
-	agent.State.Meat = int(float64(agent.State.Meat) * (1 - world.PerRoundLossFrac))
-	patient.State.Meat = int(float64(patient.State.Meat) * (1 - world.PerRoundLossFrac))
+	agent.State.Meat = agent.State.Meat * (1 - world.PerRoundLossFrac)
+	patient.State.Meat = patient.State.Meat * (1 - world.PerRoundLossFrac)
 
 	if agent.State.Meat < 0 {
 		world.People[agent.ID] = world.MakeNewPerson(agent.ID)
@@ -61,11 +61,11 @@ func (world WorldState) interact(agent *Person, patient *Person) {
 	}
 }
 
-func (agent *Person) PullARequestAmount(ps PersonalState) int {
+func (agent *Person) PullARequestAmount(ps PersonalState) float64 {
 	return rand.Intn(ps.Meat)
 }
 
-func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount int) bool {
+func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount float64) bool {
 	return true
 }
 
