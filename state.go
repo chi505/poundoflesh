@@ -55,11 +55,13 @@ func (world *WorldState) interact(agent *Person, patient *Person) {
 	patient.State.Meat -= MAXMEAT * world.PerRoundLossFrac
 
 	if agent.State.Meat < 0 {
-		world.People[agent.ID] = world.MakeNewPerson(agent.ID)
+		id := agent.ID
+		world.People[id] = world.MakeNewPerson(id)
 	}
 
 	if patient.State.Meat < 0 {
-		world.People[patient.ID] = world.MakeNewPerson(patient.ID)
+		id := patient.id
+		world.People[id] = world.MakeNewPerson(id)
 	}
 }
 
