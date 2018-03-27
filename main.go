@@ -9,7 +9,7 @@ import (
 )
 
 func GenBody(c *gin.Context, world WorldState) {
-	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": MakeNewName(), "people": world.People})
+	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": len(world.People), "people": world.People})
 }
 func genResponse(c *gin.Context, world WorldState) {
 	genBody(c, world)
