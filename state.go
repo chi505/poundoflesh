@@ -38,7 +38,7 @@ func (world WorldState) interact(agent *Person, patient *Person) {
 	meatAmount := agent.PullARequestAmount(patient.State)
 	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
 		patient.State.Meat -= meatAmount
-		agent.State.Meat += float64(meatAmount) * (1 - world.MeatLossFrac)
+		agent.State.Meat += int(float64(meatAmount) * (1 - world.MeatLossFrac))
 	}
 	agent.State.Meat = int(float64(agent.State.Meat) * (1 - world.PerRoundLossFrac))
 	patient.State.Meat = int(float64(patient.State.Meat) * (1 - world.PerRoundLossFrac))
@@ -56,7 +56,7 @@ func (agent *Person) PullARequestAmount(ps PersonalState) int {
 	return rand.Intn(ps.Meat)
 }
 
-func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount float32) bool {
+func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount int) bool {
 	return true
 }
 
