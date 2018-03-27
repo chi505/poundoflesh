@@ -25,7 +25,7 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	world = WorldState{MeatLossFrac: 0.01, PerRoundLossFrac: 0.01, NewEntrantMeanAltruism: 10, NewEntrantMeanMeat: MAXMEAT / 10, People: nil}
+	world := WorldState{MeatLossFrac: 0.01, PerRoundLossFrac: 0.01, NewEntrantMeanAltruism: 10, NewEntrantMeanMeat: MAXMEAT / 10, People: nil}
 	world.initializeState()
 	router := gin.New()
 	router.Use(gin.Logger())
