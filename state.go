@@ -27,7 +27,7 @@ type WorldState struct {
 }
 
 func (world *WorldState) initializeState() {
-	rand.Seed(time.Now().Unix())
+	rand.Seed((time.Now()).Unix())
 	for i := 0; i < NUMPEOPLE; i++ {
 		world.People = append(world.People, world.MakeNewPerson(i))
 	}
