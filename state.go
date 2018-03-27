@@ -27,7 +27,7 @@ type WorldState struct {
 
 func (world WorldState) initializeState() {
 	for i := 0; i < NUMPEOPLE; i++ {
-		People = append(People, MakeNewPerson())
+		world.People = append(world.People, MakeNewPerson())
 	}
 }
 
@@ -44,8 +44,12 @@ func (world WorldState) interact(agent *Person, patient *Person) {
 	agent.State.Meat = agent.State.Meat * (1 - PerRoundLossFrac)
 	patient.State.Meat = patient.State.Meat * (1 - PerRoundLossFrac)
 
+	if agent.State.Meat < 0 {
+		world.People[agent.ID] = MakeNewPerson(agent.ID)
+	}
+
 	if patient.State.Meat < 0 {
-		patient.World.People[patient.ID] = MakeNewPerson(patient.ID)
+		world.People[patient.ID] = MakeNewPerson(patient.ID)
 	}
 }
 
