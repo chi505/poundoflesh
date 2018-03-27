@@ -38,8 +38,8 @@ func main() {
 	//		c.String(http.StatusOK, "Hello World")
 	//	})
 	router.GET("/", func(c *gin.Context) {
-		theWorld.updateState()
 		genResponse(c, theWorld)
+		theWorld.updateState()
 	})
 
 	router.Run(":" + port)
