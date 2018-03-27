@@ -37,7 +37,7 @@ func (world *WorldState) initializeState() {
 }
 
 func (world *WorldState) updateState() {
-	permVec := rand.Perm(NUMPEOPLE)
+	_, permVec := rand.Perm(NUMPEOPLE)
 	for i := 0; i < NUMPEOPLE; i++ {
 		world.interact(world.People[permVec[i]], world.People[permVec[i+1]])
 	}
@@ -47,7 +47,7 @@ func (world *WorldState) interact(agent *Person, patient *Person) {
 	meatAmount := agent.PullARequestAmount(patient.State)
 	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
 		patient.State.Meat -= meatAmount
-		agent.State.Meat += meatAmount * (1 - world.MeatLossFrac)
+		agent.State.Meat += meatAmount * (1.0 - world.MeatLossFrac)
 	}
 	agent.State.Meat -= float64(MAXMEAT) * world.PerRoundLossFrac
 	patient.State.Meat -= float64(MAXMEAT) * world.PerRoundLossFrac
