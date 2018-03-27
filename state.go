@@ -20,7 +20,7 @@ type PersonalState struct {
 type WorldState struct {
 	MeatLossFrac           float64
 	PerRoundLossFrac       float64
-	NewEntrantMeanMeat     int
+	NewEntrantMeanMeat     float64
 	NewEntrantMeanAltruism int
 	UpdateProbPerRound     float64
 	People                 []*Person
@@ -74,7 +74,7 @@ func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount float64) bo
 func (world WorldState) MakeNewPerson(id int) *Person {
 	return &Person{
 		Name:  MakeNewName(),
-		State: PersonalState{Meat: float64(rand.Intn(world.NewEntrantMeanMeat * 2)), Altruism: rand.Intn(world.NewEntrantMeanAltruism * 2)},
+		State: PersonalState{Meat: float64(rand.Intn(int(world.NewEntrantMeanMeat * 2))), Altruism: rand.Intn(world.NewEntrantMeanAltruism * 2)},
 		ID:    id}
 
 }
