@@ -37,9 +37,9 @@ func (world *WorldState) initializeState() {
 }
 
 func (world *WorldState) updateState() {
-	permVec := rand.Perm(NUMPEOPLE / 2)
-	for i := 0; i < NUMPEOPLE/2; i++ {
-		world.interact(world.People[permVec[i]*2], world.People[permVec[i]*2+1])
+	permVec := rand.Perm(NUMPEOPLE)
+	for i := 0; i < NUMPEOPLE; i++ {
+		world.interact(world.People[permVec[i]], world.People[permVec[i+1]])
 	}
 }
 
