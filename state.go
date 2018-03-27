@@ -60,7 +60,7 @@ func (world *WorldState) interact(agent *Person, patient *Person) {
 	}
 
 	if patient.State.Meat < 0 {
-		id := patient.id
+		id := patient.ID
 		world.People[id] = world.MakeNewPerson(id)
 	}
 }
