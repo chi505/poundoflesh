@@ -45,11 +45,11 @@ func (world WorldState) interact(agent *Person, patient *Person) {
 	patient.State.Meat = patient.State.Meat * (1 - PerRoundLossFrac)
 
 	if agent.State.Meat < 0 {
-		world.People[agent.ID] = MakeNewPerson(agent.ID)
+		world.People[agent.ID] = world.MakeNewPerson(agent.ID)
 	}
 
 	if patient.State.Meat < 0 {
-		world.People[patient.ID] = MakeNewPerson(patient.ID)
+		world.People[patient.ID] = world.MakeNewPerson(patient.ID)
 	}
 }
 
@@ -64,7 +64,7 @@ func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount int) bool {
 func (world WorldState) MakeNewPerson(id int) Person {
 	return Person{
 		Name:  MakeNewName(),
-		State: PersonalState{Meat: Intn(NewEntrantMeanMeat * 2), Altruism: Intn(NewEntrantMeanAltruism * 2)},
+		State: PersonalState{Meat: rand.Intn(NewEntrantMeanMeat * 2), Altruism: rand.Intn(NewEntrantMeanAltruism * 2)},
 		ID:    id}
 
 }
@@ -74,5 +74,5 @@ func MakeNewName() string {
 }
 
 func GetNextNameChar() {
-	return string(Intn(126-33) + 33)
+	return string(rand.Intn(126-33) + 33)
 }
