@@ -43,7 +43,7 @@ func (world *WorldState) updateState() {
 	}
 }
 
-func (world WorldState) interact(agent *Person, patient *Person) {
+func (world *WorldState) interact(agent *Person, patient *Person) {
 	meatAmount := agent.PullARequestAmount(patient.State)
 	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
 		patient.State.Meat -= meatAmount
