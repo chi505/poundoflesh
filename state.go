@@ -22,7 +22,7 @@ type WorldState struct {
 	NewEntrantMeanMeat     int
 	NewEntrantMeanAltruism int
 	UpdateProbPerRound     float64
-	People                 []Person
+	People                 []*Person
 }
 
 func (world *WorldState) initializeState() {
@@ -34,7 +34,7 @@ func (world *WorldState) initializeState() {
 func (world *WorldState) updateState() {
 	permVec := rand.Perm(NUMPEOPLE / 2)
 	for i := 0; i < NUMPEOPLE/2; i++ {
-		world.interact(&world.People[permVec[2*i]], &world.People[permVec[2*i+1]])
+		world.interact(world.People[permVec[2*i]], world.People[permVec[2*i+1]])
 	}
 }
 
@@ -64,8 +64,8 @@ func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount int) bool {
 	return true
 }
 
-func (world WorldState) MakeNewPerson(id int) Person {
-	return Person{
+func (world WorldState) MakeNewPerson(id int) *Person {
+	return &Person{
 		Name:  MakeNewName(),
 		State: PersonalState{Meat: rand.Intn(world.NewEntrantMeanMeat * 2), Altruism: rand.Intn(world.NewEntrantMeanAltruism * 2)},
 		ID:    id}
