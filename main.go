@@ -4,10 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
-	"time"
 )
 
 func GenBody(c *gin.Context, world WorldState) {
@@ -29,7 +27,6 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	rand.Seed(time.Now())
 	theWorld = WorldState{MeatLossFrac: 0.01, PerRoundLossFrac: 0.01, NewEntrantMeanAltruism: 10, NewEntrantMeanMeat: MAXMEAT / 10, People: make([]*Person, 0)}
 	theWorld.initializeState()
 	router := gin.New()
