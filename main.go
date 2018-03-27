@@ -16,7 +16,7 @@ type MutableInt struct {
 var count = &MutableInt{0}
 
 func GenBody(c *gin.Context, world WorldState) {
-	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": "Hello World!" "people": world.People})
+	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": "Hello World!", "people": world.People})
 }
 func genResponse(c *gin.Context, world WorldState) {
 	genBody(c, world)
@@ -43,7 +43,7 @@ func main() {
 	//		c.String(http.StatusOK, "Hello World")
 	//	})
 	router.GET("/", func(c *gin.Context) {
-	world.updateState()
+		world.updateState()
 		genResponse(c, world)
 	})
 
