@@ -22,7 +22,7 @@ type WorldState struct {
 	NewEntrantMeanMeat     int
 	NewEntrantMeanAltruism int
 	UpdateProbPerRound     float64
-	People                 *[]Person
+	People                 []Person
 }
 
 func (world WorldState) initializeState() {
