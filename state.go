@@ -31,7 +31,11 @@ func (world *WorldState) initializeState() {
 	}
 }
 
-func (world WorldState) updateState() {
+func (world *WorldState) updateState() {
+	permVec := rand.Perm(NUMPEOPLE / 2)
+	for i = 0; i < NUMPEOPLE/2; i++ {
+		world.interact(People[permVec[2*i]], People[permVec[2*i+1]])
+	}
 }
 
 func (world WorldState) interact(agent *Person, patient *Person) {
