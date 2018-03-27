@@ -73,6 +73,6 @@ func MakeNewName() string {
 	return GetNextNameChar() + GetNextNameChar() + GetNextNameChar() + GetNextNameChar() + GetNextNameChar()
 }
 
-func GetNextNameChar() {
+func GetNextNameChar() string {
 	return string(rand.Intn(126-33) + 33)
 }
