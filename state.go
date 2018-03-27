@@ -1,6 +1,7 @@
 package main
 
 import "math/rand"
+import "time"
 
 var MAXMEAT = 512
 var NUMPEOPLE = 512
@@ -26,6 +27,7 @@ type WorldState struct {
 }
 
 func (world *WorldState) initializeState() {
+	rand.Seed(time.Now())
 	for i := 0; i < NUMPEOPLE; i++ {
 		world.People = append(world.People, world.MakeNewPerson(i))
 	}
