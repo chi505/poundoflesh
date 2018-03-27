@@ -62,7 +62,7 @@ func (world WorldState) interact(agent *Person, patient *Person) {
 }
 
 func (agent *Person) PullARequestAmount(ps PersonalState) float64 {
-	return rand.Intn(int(ps.Meat))
+	return float64(rand.Intn(int(ps.Meat)))
 }
 
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount float64) bool {
