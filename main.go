@@ -9,7 +9,7 @@ import (
 )
 
 func GenBody(c *gin.Context, world WorldState) {
-	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": len(world.People), "people": world.People})
+	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": world.Count, "people": world.People})
 }
 func genResponse(c *gin.Context, world WorldState) {
 	genBody(c, world)
@@ -27,7 +27,7 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	theWorld = WorldState{MeatLossFrac: 0.25, PerRoundLossFrac: 0.05, NewEntrantMeanAltruism: 10, NewEntrantMeanMeat: MAXMEAT / 10, People: make([]*Person, 0)}
+	theWorld = WorldState{Count: 0, MeatLossFrac: 0.25, PerRoundLossFrac: 0.05, NewEntrantMeanAltruism: 10, NewEntrantMeanMeat: MAXMEAT / 10, People: make([]*Person, 0)}
 	theWorld.initializeState()
 	router := gin.New()
 	router.Use(gin.Logger())

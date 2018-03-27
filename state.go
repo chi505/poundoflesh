@@ -24,6 +24,7 @@ type WorldState struct {
 	NewEntrantMeanAltruism int
 	UpdateProbPerRound     float64
 	People                 []*Person
+	Count                  int
 }
 
 func (world *WorldState) initializeState() {
@@ -40,6 +41,7 @@ func (world *WorldState) updateState() {
 	permVec := rand.Perm(NUMPEOPLE)
 	for i := 0; i < NUMPEOPLE/2; i++ {
 		world.interact(world.People[permVec[2*i]], world.People[permVec[2*i+1]])
+		world.Count++
 	}
 }
 
