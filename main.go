@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func GenBody(c *gin.Context, world WorldState) {
@@ -20,7 +21,6 @@ func genBody(c *gin.Context, world WorldState) {
 }
 
 var theWorld WorldState
-var count int
 
 func main() {
 	port := os.Getenv("PORT")
@@ -28,9 +28,9 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
+	rand.Seed(time.Now())
 	theWorld = WorldState{MeatLossFrac: 0.01, PerRoundLossFrac: 0.01, NewEntrantMeanAltruism: 10, NewEntrantMeanMeat: MAXMEAT / 10, People: make([]*Person, 0)}
 	theWorld.initializeState()
-	count = 0
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
@@ -41,10 +41,7 @@ func main() {
 	//	})
 	router.GET("/", func(c *gin.Context) {
 		genResponse(c, theWorld)
-		if count > 0 {
-			theWorld.updateState()
-		}
-		count++
+		theWorld.updateState()
 	})
 
 	router.Run(":" + port)
