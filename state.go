@@ -4,7 +4,7 @@ import "math/rand"
 import "time"
 
 var MAXMEAT = 512
-var NUMPEOPLE = 512
+var NUMPEOPLE = 14
 
 type Person struct {
 	Name  string
