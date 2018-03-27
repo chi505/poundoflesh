@@ -25,7 +25,7 @@ type WorldState struct {
 	People                 []Person
 }
 
-func (world WorldState) initializeState() {
+func (world *WorldState) initializeState() {
 	for i := 0; i < NUMPEOPLE; i++ {
 		world.People = append(world.People, world.MakeNewPerson(i))
 	}
