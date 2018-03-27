@@ -3,23 +3,73 @@ package main
 import "math/rand"
 
 var MAXMEAT = 512
+var NUMPEOPLE = 512
 
 type Person struct {
 	Name  string
 	State PersonalState
+	ID    int
 }
 
 type PersonalState struct {
-	Meat int
+	Meat     int //quantity
+	Altruism int //Will be generous with probability (1 + exp(-altruism - meatdelta))^-1
 }
 
-func initializeState() {
+type WorldState struct {
+	MeatLossFrac           float64
+	PerRoundLossFrac       float64
+	NewEntrantMeanMeat     int
+	NewEntrantMeanAltruism int
+	UpdateProbPerRound     float64
+	People                 *[]Person
+}
+
+func (world WorldState) initializeState() {
 	count.Value = 0
-
-	People = append(People, Person{"David", PersonalState{rand.Intn(MAXMEAT)}})
-	People = append(People, Person{"Taniqua", PersonalState{rand.Intn(MAXMEAT)}})
+	for i := 0; i < NUMPEOPLE; i++ {
+		People = append(People, MakeNewPerson())
+	}
 }
 
-func updateState() {
+func (world WorldState) updateState() {
 	count.Value++
+}
+
+func (world WorldState) interact(agent *Person, patient *Person) {
+	meatAmount := agent.PullARequestAmount(patient.State)
+	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
+		patient.State.Meat -= meatAmount
+		agent.State.Meat += meatAmount * (1 - MeatLossFrac)
+	}
+	agent.State.Meat = agent.State.Meat * (1 - PerRoundLossFrac)
+	patient.State.Meat = patient.State.Meat * (1 - PerRoundLossFrac)
+
+	if patient.State.Meat < 0 {
+		patient.World.People[patient.ID] = MakeNewPerson(patient.ID)
+	}
+}
+
+func (agent *Person) PullARequestAmount(ps PersonalState) int {
+	return rand.Intn(ps.Meat)
+}
+
+func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount int) bool {
+	return true
+}
+
+func (world WorldState) MakeNewPerson(id int) Person {
+	return Person{
+		Name:  MakeNewName(),
+		State: PersonalState{Meat: Intn(NewEntrantMeanMeat * 2), Altruism: Intn(NewEntrantMeanAltruism * 2)},
+		ID:    id}
+
+}
+
+func MakeNewName() string {
+	return GetNextNameChar() + GetNextNameChar() + GetNextNameChar() + GetNextNameChar() + GetNextNameChar()
+}
+
+func GetNextNameChar() {
+	return string(Intn(126-33) + 33)
 }
