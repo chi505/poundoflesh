@@ -47,10 +47,10 @@ func (world WorldState) interact(agent *Person, patient *Person) {
 	meatAmount := agent.PullARequestAmount(patient.State)
 	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
 		patient.State.Meat -= meatAmount
-		agent.State.Meat += int(float64(meatAmount) * (1 - world.MeatLossFrac))
+		agent.State.Meat += meatAmount * (1 - world.MeatLossFrac)
 	}
-	agent.State.Meat = agent.State.Meat * (1 - world.PerRoundLossFrac)
-	patient.State.Meat = patient.State.Meat * (1 - world.PerRoundLossFrac)
+	agent.State.Meat -= MAXMEAT * world.PerRoundLossFrac
+	patient.State.Meat -= MAXMEAT * world.PerRoundLossFrac
 
 	if agent.State.Meat < 0 {
 		world.People[agent.ID] = world.MakeNewPerson(agent.ID)
@@ -62,7 +62,7 @@ func (world WorldState) interact(agent *Person, patient *Person) {
 }
 
 func (agent *Person) PullARequestAmount(ps PersonalState) float64 {
-	return rand.Intn(ps.Meat)
+	return rand.Intn(int(ps.Meat))
 }
 
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount float64) bool {
@@ -72,7 +72,7 @@ func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount float64) bo
 func (world WorldState) MakeNewPerson(id int) *Person {
 	return &Person{
 		Name:  MakeNewName(),
-		State: PersonalState{Meat: rand.Intn(world.NewEntrantMeanMeat * 2), Altruism: rand.Intn(world.NewEntrantMeanAltruism * 2)},
+		State: PersonalState{Meat: float64(rand.Intn(world.NewEntrantMeanMeat * 2)), Altruism: rand.Intn(world.NewEntrantMeanAltruism * 2)},
 		ID:    id}
 
 }
