@@ -67,9 +67,9 @@ func (world *WorldState) initializeState() {
 
 func (world *WorldState) loadMeatMaps() {
 	world.PersonSpec["kidney"] = MeatSpec{Count: 2, MeanInitMeat: int(MAXMEAT / 10)}
-	world.Assets.Organs["kidney"] = append(make([]MeatData, 0), MeatData{Description: "A glistening reddish brown bean shaped chunk of MEAT"})
-	world.PersonSpec["heart"] = MeatSpec{Count: 2, MeanInitMeat: int(MAXMEAT)}
-	world.Assets.Organs["heart"] = append(make([]MeatData, 0), MeatData{Description: "A throbbing, beating, dripping, symbolic heart"})
+	world.Assets.Organs["kidney"] = append([]MeatData{}, MeatData{Description: "A glistening reddish brown bean shaped chunk of MEAT."})
+	world.PersonSpec["heart"] = MeatSpec{Count: 1, MeanInitMeat: int(MAXMEAT)}
+	world.Assets.Organs["heart"] = append(make([]MeatData, 0), MeatData{Description: "A throbbing, beating, dripping, symbolic heart."})
 }
 
 func (world *WorldState) updateState() {
