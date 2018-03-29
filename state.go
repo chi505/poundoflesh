@@ -64,10 +64,10 @@ func (world *WorldState) initializeState() {
 }
 
 func (world *WorldState) loadMeatMaps() {
-	world.PersonSpec["kidney"] = OrganSpec{Count: 2, MeanInitMeat: MAXMEAT / 10}
-	world.Assets.Organs["kidney"] = MeatData{Description: "A glistening reddish brown bean shaped chunk of MEAT"}
-	world.PersonSpec["heart"] = OrganSpec{Count: 2, MeanInitMeat: MAXMEAT}
-	world.Assets.Organs["heart"] = MeatData{Description: "A throbbing, beating, dripping, symbolic heart"}
+	world.PersonSpec["kidney"] = MeatSpec{Count: 2, MeanInitMeat: MAXMEAT / 10}
+	world.Assets.Organs["kidney"] = append(make([]MeatData, 0), MeatData{Description: "A glistening reddish brown bean shaped chunk of MEAT"})
+	world.PersonSpec["heart"] = MeatSpec{Count: 2, MeanInitMeat: MAXMEAT}
+	world.Assets.Organs["heart"] = append(make([]MeatData, 0), MeatData{Description: "A throbbing, beating, dripping, symbolic heart"})
 }
 
 func (world *WorldState) updateState() {
@@ -123,7 +123,7 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 
 }
 
-func (noob *Person) InsertMeat(assets Assets, spec map[string]OrganSpec) {
+func (noob *Person) InsertMeat(assets Assets, spec map[string]MeatSpec) {
 	for name, spec := range spec {
 		for i := 0; i < spec.Count; i++ {
 			noob.State.MeatBag = append(noob.State.MeatBag,
