@@ -7,7 +7,7 @@
     <p>
     {{.Name}}
     {{ range .State.MeatBag }}
-        {{ .Name }} : {{.Description}} {{.Meat}}
+        {{ .Name }} : {{.Data.Description}} {{.Meat}}
     {{end}}
 {{end}}
 
