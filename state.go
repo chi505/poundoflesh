@@ -15,16 +15,36 @@ type Person struct {
 type PersonalState struct {
 	Meat     float64 //quantity
 	Altruism int     //Will be generous with probability (1 + exp(-altruism - meatdelta))^-1
+	MeatBag  []MeatPiece
+}
+
+type MeatPiece struct {
+	Name string
+	Data MeatData
+}
+
+type MeatData struct {
+	Description string
+	Meat        int
 }
 
 type WorldState struct {
+	Params PoundOFleshParams
+	People []*Person
+	Count  int
+	Assets TextAssets
+}
+
+type PoundOFleshParams struct {
 	MeatLossFrac           float64
 	PerRoundLossFrac       float64
 	NewEntrantMeanMeat     float64
 	NewEntrantMeanAltruism int
 	UpdateProbPerRound     float64
-	People                 []*Person
-	Count                  int
+}
+
+type TextAssets struct {
+	Organs map[string][]MeatData
 }
 
 func (world *WorldState) initializeState() {
@@ -65,8 +85,8 @@ func (world *WorldState) interact(agent *Person, patient *Person) {
 	}
 }
 
-func (agent *Person) PullARequestAmount(ps PersonalState) float64 {
-	return float64(rand.Intn(int(ps.Meat)) + 1)
+func (agent *Person) PullAMeatRequest(ps PersonalState) *MeatPiece {
+	return &ps.MeatBag[rand.Intn(len(ps.MeatBag))]
 }
 
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount float64) bool {
