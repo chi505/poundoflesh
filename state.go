@@ -79,9 +79,8 @@ func (world *WorldState) updateState() {
 		world.Count++
 	}
 	for i, person := range world.People {
-		world.MassageMeat(person)
-		if len(person.State.MeatBag) == 0 {
-			person = world.MakeNewPerson(i) // could do this in MassageMeat but making replacement more explicit
+		if world.MassageMeat(person) == 0 {
+			world.People[i] = world.MakeNewPerson(i) // could do this in MassageMeat but making replacement more explicit
 		}
 	}
 }
@@ -103,20 +102,17 @@ func (patient *Person) WouldAcceptOfferFrom(as PersonalState, request *MeatPiece
 	return true
 }
 
-func (world *WorldState) MassageMeat(p *Person) {
+func (world *WorldState) MassageMeat(p *Person) int {
 	n := len(p.State.MeatBag) - 1
-	count := 0
+	count := n + 1
 	for i := range p.State.MeatBag {
 		p.State.MeatBag[n-i].Meat -= MEATDEC
 		if p.State.MeatBag[n-i].Meat <= 0 {
 			p.State.MeatBag = append(p.State.MeatBag[:n-i], p.State.MeatBag[n-i+1:]...)
+			count--
 		}
-		count++
 	}
-	if count == n+1 {
-		id := p.ID
-		p = world.MakeNewPerson(id)
-	}
+	return count
 }
 
 func (world WorldState) MakeNewPerson(id int) *Person {
