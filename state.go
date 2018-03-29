@@ -5,6 +5,7 @@ import "time"
 
 var MAXMEAT = 512.0
 var NUMPEOPLE = 16
+var MEATDEC = 5
 
 type Person struct {
 	Name  string
@@ -25,14 +26,19 @@ type MeatPiece struct {
 
 type MeatData struct {
 	Description string
-	Meat        int
 }
 
 type WorldState struct {
-	Params PoundOFleshParams
-	People []*Person
-	Count  int
-	Assets TextAssets
+	Params     PoundOFleshParams
+	People     []*Person
+	Count      int
+	Assets     TextAssets
+	PersonSpec map[string]MeatSpec
+}
+
+type MeatSpec struct {
+	Count        int
+	MeanInitMeat int
 }
 
 type PoundOFleshParams struct {
@@ -57,48 +63,77 @@ func (world *WorldState) initializeState() {
 	}
 }
 
+func (world *WorldState) loadMeatMaps() {
+	world.PersonSpec["kidney"] = OrganSpec{Count: 2, MeanInitMeat: MAXMEAT / 10}
+	world.Assets.Organs["kidney"] = MeatData{Description: "A glistening reddish brown bean shaped chunk of MEAT"}
+	world.PersonSpec["heart"] = OrganSpec{Count: 2, MeanInitMeat: MAXMEAT}
+	world.Assets.Organs["heart"] = MeatData{Description: "A throbbing, beating, dripping, symbolic heart"}
+}
+
 func (world *WorldState) updateState() {
 	permVec := rand.Perm(NUMPEOPLE)
 	for i := 0; i < NUMPEOPLE/2; i++ {
 		world.interact(world.People[permVec[2*i]], world.People[permVec[2*i+1]])
 		world.Count++
 	}
+	for _, person := range world.People {
+		world.MassageMeat(person)
+		if len(person.State.MeatBag.Meat) == 0 {
+			person = world.MakeNewPerson() // could do this in MassageMeat but making replacement more explicit
+		}
+	}
 }
 
 func (world *WorldState) interact(agent *Person, patient *Person) {
-	meatAmount := agent.PullARequestAmount(patient.State)
+	meatIndex := agent.PullARequestAmount(patient.State)
 	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
-		patient.State.Meat -= meatAmount
-		agent.State.Meat += meatAmount * (1.0 - world.MeatLossFrac)
-	}
-	agent.State.Meat -= MAXMEAT * world.PerRoundLossFrac
-	patient.State.Meat -= MAXMEAT * world.PerRoundLossFrac
-
-	if agent.State.Meat < 0 {
-		id := agent.ID
-		world.People[id] = world.MakeNewPerson(id)
-	}
-
-	if patient.State.Meat < 0 {
-		id := patient.ID
-		world.People[id] = world.MakeNewPerson(id)
+		agent.State.MeatBag = append(agent.State.MeatBag, patient.State.MeatBag[meatIndex])
+		//THESE LINES MUST BE IN THIS ORDER
+		patient.State.MeatBag = append(patient.State.MeatBag[:meatIndex], patient.State.MeatBag[meatIndex+1:]...)
 	}
 }
 
-func (agent *Person) PullAMeatRequest(ps PersonalState) *MeatPiece {
-	return &ps.MeatBag[rand.Intn(len(ps.MeatBag))]
+func (agent *Person) PullAMeatRequest(ps PersonalState) int {
+	return rand.Intn(len(ps.MeatBag))
 }
 
-func (patient *Person) WouldAcceptOfferFrom(as PersonalState, amount float64) bool {
+func (patient *Person) WouldAcceptOfferFrom(as PersonalState, request *MeatPiece) bool {
 	return true
 }
 
-func (world WorldState) MakeNewPerson(id int) *Person {
-	return &Person{
-		Name:  MakeNewName(),
-		State: PersonalState{Meat: float64(rand.Intn(int(world.NewEntrantMeanMeat * 2))), Altruism: rand.Intn(world.NewEntrantMeanAltruism * 2)},
-		ID:    id}
+func (world *WorldState) MassageMeat(p *Person) {
+	for i := range p.State.MeatBag {
+		p.State.MeatBag[i].Meat -= MEATDEC
+		if p.State.MeatBag[i].Meat <= 0 {
+			p.State.MeatBag = append(p.State.MeatBag[:i], p.State.MeatBag[i+1:]...)
+		}
+	}
+}
 
+func (world WorldState) MakeNewPerson(id int) *Person {
+	noob := &Person{
+		Name: MakeNewName(),
+		State: PersonalState{
+			Meat:     float64(rand.Intn(int(world.NewEntrantMeanMeat * 2))),
+			Altruism: rand.Intn(world.NewEntrantMeanAltruism * 2),
+			MeatBag:  make([]MeatPiece, 0)},
+		ID: id}
+	noob.InsertMeat(world.Assets, world.PersonSpec)
+	return noob
+
+}
+
+func (noob *Person) InsertMeat(assets Assets, spec map[string]OrganSpec) {
+	for name, spec := range spec {
+		for i := 0; i < spec.Count; i++ {
+			noob.State.MeatBag = append(noob.State.MeatBag,
+				MeatPiece{
+					Name: "name",
+					Data: MeatData{
+						Description: assets.TextAssets.Organs[name][rand.Intn(assets.TextAssets.Organs[name])],
+						Meat:        spec[name].MeanInitMeat/2 + rand.Intn(spec[name].MeanInitMeat)}})
+		}
+	}
 }
 
 func MakeNewName() string {

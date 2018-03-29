@@ -6,7 +6,10 @@
 {{range .people }}
     <p>
     {{.Name}}
-    {{.State.Meat}}
+    {{ range .State.MeatBag }}
+    {{ .Name }}
+    {{ .Data.Description }}
+    {{ .Data.Meat }}
 {{end}}
 
 </body>
