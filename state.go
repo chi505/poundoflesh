@@ -114,7 +114,8 @@ func (world *WorldState) MassageMeat(p *Person) {
 		count++
 	}
 	if count == n+1 {
-		p.State.MeatBag = make([]MeatPiece, 0)
+		id := p.ID
+		p = world.MakeNewPerson(id)
 	}
 }
 
