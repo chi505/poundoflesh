@@ -76,16 +76,16 @@ func (world *WorldState) updateState() {
 		world.interact(world.People[permVec[2*i]], world.People[permVec[2*i+1]])
 		world.Count++
 	}
-	for _, person := range world.People {
+	for i, person := range world.People {
 		world.MassageMeat(person)
 		if len(person.State.MeatBag.Meat) == 0 {
-			person = world.MakeNewPerson() // could do this in MassageMeat but making replacement more explicit
+			person = world.MakeNewPerson(i) // could do this in MassageMeat but making replacement more explicit
 		}
 	}
 }
 
 func (world *WorldState) interact(agent *Person, patient *Person) {
-	meatIndex := agent.PullARequestAmount(patient.State)
+	meatIndex := agent.PullAMeatRequest(patient.State)
 	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
 		agent.State.MeatBag = append(agent.State.MeatBag, patient.State.MeatBag[meatIndex])
 		//THESE LINES MUST BE IN THIS ORDER
