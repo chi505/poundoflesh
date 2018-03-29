@@ -64,9 +64,9 @@ func (world *WorldState) initializeState() {
 }
 
 func (world *WorldState) loadMeatMaps() {
-	world.PersonSpec["kidney"] = MeatSpec{Count: 2, MeanInitMeat: MAXMEAT / 10}
+	world.PersonSpec["kidney"] = MeatSpec{Count: 2, MeanInitMeat: int(MAXMEAT / 10)}
 	world.Assets.Organs["kidney"] = append(make([]MeatData, 0), MeatData{Description: "A glistening reddish brown bean shaped chunk of MEAT"})
-	world.PersonSpec["heart"] = MeatSpec{Count: 2, MeanInitMeat: MAXMEAT}
+	world.PersonSpec["heart"] = MeatSpec{Count: 2, MeanInitMeat: int(MAXMEAT)}
 	world.Assets.Organs["heart"] = append(make([]MeatData, 0), MeatData{Description: "A throbbing, beating, dripping, symbolic heart"})
 }
 
@@ -86,7 +86,7 @@ func (world *WorldState) updateState() {
 
 func (world *WorldState) interact(agent *Person, patient *Person) {
 	meatIndex := agent.PullAMeatRequest(patient.State)
-	if patient.WouldAcceptOfferFrom(agent.State, meatAmount) {
+	if patient.WouldAcceptOfferFrom(agent.State, &patient.State.MeatBag[meatIndex]) {
 		agent.State.MeatBag = append(agent.State.MeatBag, patient.State.MeatBag[meatIndex])
 		//THESE LINES MUST BE IN THIS ORDER
 		patient.State.MeatBag = append(patient.State.MeatBag[:meatIndex], patient.State.MeatBag[meatIndex+1:]...)
