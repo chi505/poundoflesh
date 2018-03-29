@@ -4,7 +4,7 @@ import "math/rand"
 import "time"
 
 var MAXMEAT = 512.0
-var NUMPEOPLE = 16
+var NUMPEOPLE = 2
 var MEATDEC = 5
 
 type Person struct {
@@ -59,6 +59,7 @@ func (world *WorldState) initializeState() {
 	var seed int64
 	seed = now.Unix()
 	rand.Seed(seed)
+	world.loadMeatMaps()
 	for i := 0; i < NUMPEOPLE; i++ {
 		world.People = append(world.People, world.MakeNewPerson(i))
 	}
