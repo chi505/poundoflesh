@@ -131,8 +131,8 @@ func (noob *Person) InsertMeat(assets Assets, spec map[string]MeatSpec) {
 				MeatPiece{
 					Name: "name",
 					Data: MeatData{
-						Description: assets.TextAssets.Organs[name][rand.Intn(assets.TextAssets.Organs[name])],
-						Meat:        spec[name].MeanInitMeat/2 + rand.Intn(spec[name].MeanInitMeat)}})
+						Description: assets.TextAssets.Organs[name][rand.Intn(assets.TextAssets.Organs[name])] + " It originally belonged to " + noob.Name + "."},
+					Meat: spec[name].MeanInitMeat/2 + rand.Intn(spec[name].MeanInitMeat)})
 		}
 	}
 }
