@@ -22,6 +22,7 @@ type PersonalState struct {
 type MeatPiece struct {
 	Name string
 	Data MeatData
+	Meat int
 }
 
 type MeatData struct {
