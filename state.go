@@ -79,7 +79,7 @@ func (world *WorldState) updateState() {
 	}
 	for i, person := range world.People {
 		world.MassageMeat(person)
-		if len(person.State.MeatBag.Meat) == 0 {
+		if len(person.State.MeatBag) == 0 {
 			person = world.MakeNewPerson(i) // could do this in MassageMeat but making replacement more explicit
 		}
 	}
