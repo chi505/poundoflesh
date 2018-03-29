@@ -2,6 +2,7 @@ package main
 
 import "math/rand"
 import "time"
+import "math"
 
 var MAXMEAT = 512.0
 var NUMPEOPLE = 20
@@ -143,7 +144,7 @@ func (noob *Person) InsertMeat(assets TextAssets, specs map[string]MeatSpec) {
 					Name: name,
 					Data: MeatData{
 						Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description + " It originally belonged to <b>" + noob.Name + "</b>."},
-					Meat: min(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat), MAXMEAT)})
+					Meat: math.Min(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat), MAXMEAT)})
 		}
 	}
 }
