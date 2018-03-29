@@ -6,9 +6,11 @@
 {{range .people }}
     <p>
     {{.Name}}
+    <ol>
     {{ range .State.MeatBag }}
-        {{ .Name }} : {{.Data.Description}} {{.Meat}}
+        <li>{{ .Name }} : {{.Data.Description}} {{.Meat}}
     {{end}}
+    </ol>
 {{end}}
 
 </body>
