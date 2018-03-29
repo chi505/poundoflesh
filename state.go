@@ -4,7 +4,7 @@ import "math/rand"
 import "time"
 
 var MAXMEAT = 512.0
-var NUMPEOPLE = 2
+var NUMPEOPLE = 20
 var MEATDEC = 5
 
 type Person struct {
@@ -68,8 +68,15 @@ func (world *WorldState) initializeState() {
 func (world *WorldState) loadMeatMaps() {
 	world.PersonSpec["kidney"] = MeatSpec{Count: 2, MeanInitMeat: int(MAXMEAT / 10)}
 	world.Assets.Organs["kidney"] = append([]MeatData{}, MeatData{Description: "A glistening reddish brown bean shaped chunk of MEAT."})
+	world.Assets.Organs["kidney"] = append(world.Assets.Organs["kidney"], MeatData{Description: "A bean shaped brownish red chunk of meat."})
+
 	world.PersonSpec["heart"] = MeatSpec{Count: 1, MeanInitMeat: int(MAXMEAT)}
 	world.Assets.Organs["heart"] = append(make([]MeatData, 0), MeatData{Description: "A throbbing, beating, dripping, symbolic heart."})
+
+	world.PersonSpec["lung"] = MeatSpec{Count: 2, MeanInitMeat: int(MAXMEAT / 5)}
+	world.Assets.Organs["lung"] = append([]MeatData{}, MeatData{Description: "A glistening spongy lung shaped chunk of MEAT."})
+	world.Assets.Organs["lung"] = append(world.Assets.Organs["lung"], MeatData{Description: "A lung shaped sponge meat."})
+
 }
 
 func (world *WorldState) updateState() {
@@ -135,8 +142,8 @@ func (noob *Person) InsertMeat(assets TextAssets, specs map[string]MeatSpec) {
 				MeatPiece{
 					Name: name,
 					Data: MeatData{
-						Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description + " It originally belonged to " + noob.Name + "."},
-					Meat: spec.MeanInitMeat/2 + rand.Intn(spec.MeanInitMeat)})
+						Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description + " It originally belonged to <b>" + noob.Name + "</b>."},
+					Meat: min(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat), MAXMEAT)})
 		}
 	}
 }

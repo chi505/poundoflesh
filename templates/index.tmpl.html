@@ -5,10 +5,10 @@
 
 {{range .people }}
     <p>
-    {{.Name}}
+    <em>{{.Name}}</em>
     <ol>
     {{ range .State.MeatBag }}
-        <li>{{ .Name }} : {{.Data.Description}} {{.Meat}}</li>
+        <li><em>{{ .Name }}</em> : {{.Data.Description}} {{.Meat}}</li>
     {{end}}
     </ol>
 {{end}}
