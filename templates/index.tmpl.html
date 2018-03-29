@@ -9,7 +9,8 @@
     {{ range .State.MeatBag }}
     {{ .Name }}
     {{ .Data.Description }}
-    {{ .Data.Meat }}
+    {{.Meat }}
+    {{end}}
 {{end}}
 
 </body>
