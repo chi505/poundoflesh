@@ -8,7 +8,7 @@
     <em>{{.Name}}</em>
     <ol>
     {{ range .State.MeatBag }}
-        <li><em>{{ .Name }}</em> : {{.Data.Description}} {{.Meat}} This was originally owned by <em>{{ .OrigOwner }}</em></li>
+        <li><em>{{ .Name }}</em> : {{.Data.Description}} {{.Meat}} This was originally owned by <strong>{{ .OrigOwner }}</strong></li>
     {{end}}
     </ol>
 {{end}}
