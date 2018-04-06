@@ -94,7 +94,7 @@ func (world *WorldState) updateState() {
 		}
 	}
 
-	sort.Slice(world.People, func(i, j int) bool { return len(world.People[i].State.MeatBag) < len(world.People[j].State.MeatBag) })
+	sort.Slice(world.People, func(i, j int) bool { return len(world.People[i].State.MeatBag) > len(world.People[j].State.MeatBag) })
 }
 
 func (world *WorldState) interact(agent *Person, patient *Person) {
