@@ -12,10 +12,6 @@ func GenBody(c *gin.Context, world WorldState) {
 	c.HTML(http.StatusOK, "index.tmpl.html", gin.H{"body": world.Count, "people": world.People})
 }
 func genResponse(c *gin.Context, world WorldState) {
-	genBody(c, world)
-}
-
-func genBody(c *gin.Context, world WorldState) {
 	GenBody(c, world)
 }
 

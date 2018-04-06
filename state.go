@@ -21,9 +21,10 @@ type PersonalState struct {
 }
 
 type MeatPiece struct {
-	Name string
-	Data MeatData
-	Meat int
+	Name      string //this is outside of Data because used as key into various things
+	Data      MeatData
+	Meat      int
+	OrigOwner string
 }
 
 type MeatData struct {
@@ -143,8 +144,9 @@ func (noob *Person) InsertMeat(assets TextAssets, specs map[string]MeatSpec) {
 				MeatPiece{
 					Name: name,
 					Data: MeatData{
-						Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description + " It originally belonged to <em>" + noob.Name + "</em>."},
-					Meat: int(math.Min(float64(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat)), MAXMEAT))})
+						Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description},
+					Meat:      int(math.Min(float64(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat)), MAXMEAT)),
+					OrigOwner: noob.Name})
 		}
 	}
 }
