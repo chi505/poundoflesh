@@ -10,8 +10,9 @@
     {{ range .State.MeatBag }}
         <li><em>{{ .Name }}</em> : {{.Data.Description}} --- {{.Meat}} MEAT units remain. --- This was originally owned by <strong>{{ .OrigOwner }}</strong></li>
     {{end}}
-    {{.Birthday}}
     </ol>
+    
+    {{.Birthday}}
 {{end}}
 
 </body>
