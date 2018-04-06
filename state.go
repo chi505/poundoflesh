@@ -3,6 +3,7 @@ package main
 import "math/rand"
 import "time"
 import "math"
+import "sort"
 
 var MAXMEAT = 512.0
 var NUMPEOPLE = 20
@@ -92,6 +93,8 @@ func (world *WorldState) updateState() {
 			world.People[i] = world.MakeNewPerson(i) // could do this in MassageMeat but making replacement more explicit
 		}
 	}
+
+	sort.Slice(world.People, func(i, j int) bool { return len(world.People[i].State.MeatBag) < len(world.People[j].State.MeatBag) })
 }
 
 func (world *WorldState) interact(agent *Person, patient *Person) {
