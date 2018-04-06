@@ -19,6 +19,7 @@ type PersonalState struct {
 	Meat     int //quantity
 	Altruism int //Will be generous with probability (1 + exp(-altruism - meatdelta))^-1
 	MeatBag  []MeatPiece
+	Birthday int
 }
 
 type MeatPiece struct {
@@ -133,7 +134,8 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 		State: PersonalState{
 			Meat:     rand.Intn(int(world.Params.NewEntrantMeanMeat * 2)),
 			Altruism: rand.Intn(world.Params.NewEntrantMeanAltruism * 2),
-			MeatBag:  make([]MeatPiece, 0)},
+			MeatBag:  make([]MeatPiece, 0),
+			Birthday: world.Count},
 		ID: id}
 	noob.InsertMeat(world.Assets, world.PersonSpec)
 	return noob
