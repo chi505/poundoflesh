@@ -13,16 +13,15 @@ type Person struct {
 }
 
 type MentalState struct {
-    Fear int
-    Hope int
-    Altruism int
-    
+	Fear     int
+	Hope     int
+	Altruism int
 }
 
 type PersonalState struct {
-	Meat     int //quantity
-	MeatBag  []MeatPiece
-	Birthday int
+	MeatTotal int //quantity
+	MeatBag   []MeatPiece
+	Birthday  int
 }
 
 type MeatPiece struct {
