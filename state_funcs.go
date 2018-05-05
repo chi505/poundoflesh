@@ -5,7 +5,6 @@ import "time"
 import "math"
 import "sort"
 
-
 func (world *WorldState) initializeState() {
 	now := time.Now()
 	var seed int64
@@ -49,9 +48,9 @@ func (world *WorldState) updateState() {
 	sort.Slice(world.People, func(i, j int) bool { return len(world.People[i].State.MeatBag) > len(world.People[j].State.MeatBag) })
 }
 
-func (params *PoundOFleshParams) JitterParams () {
-	params.MeatLossFrac += ClampF32(rand.NormFloat64() * 0.02, 1, 0)
-	params.PerRoundLossFrac += ClampF32(rand.NormFloat64() * 0.05, 1, 0)
+func (params *PoundOFleshParams) JitterParams() {
+	params.MeatLossFrac += ClampF32(float32(rand.NormFloat32())*0.02, 1, 0)
+	params.PerRoundLossFrac += ClampF32(float32(rand.NormFloat64())*0.05, 1, 0)
 }
 
 func (world *WorldState) interact(agent *Person, patient *Person) {
@@ -69,40 +68,41 @@ func (agent *Person) PullAMeatRequest(ps PersonalState) *MeatPiece {
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, request *MeatPiece) bool {
 	return true
 }
+
 //insertion can't logically be impossible
-func (person *Person) AddMeat(meat *Meat) {
+func (person *Person) AddMeat(meat *MeatPiece) {
 	person.State.MeatBag = append(person.State.MeatBag, meat)
-	person.State.Meat += meat.Meat
+	person.State.MeatTotal += meat.Meat
 }
 
-func (person *Person) GetMeatIndex(meat *Meat) (int, bool) {
-		for meatIndex := range person.State.MeatBag {
-			if person.State.MeatBag[i] == meat {
-				return meatIndex, true
-			}
+func (person *Person) GetMeatIndex(meat *MeatPiece) (int, bool) {
+	for meatIndex := range person.State.MeatBag {
+		if person.State.MeatBag[i] == meat {
+			return meatIndex, true
 		}
+	}
 	return 0, false
 }
 
-func (person *Person) GetMeatByWeight(weight int) (*Meat, bool) {
+func (person *Person) GetMeatByWeight(weight int) (*MeatPiece, bool) {
 	sum := 0
-	nullmeat = MeatPiece {}
+	nullmeat = MeatPiece{}
 	meatbag := person.State.MeatBag
-			for meatIndex := range meatbag {
-				sum += meatbag[meatIndex].Meat
-			if sum >= weight {
-				return meatbag[MeatIndex], true
-			}
+	for meatIndex := range meatbag {
+		sum += meatbag[meatIndex].Meat
+		if sum >= weight {
+			return meatbag[MeatIndex], true
 		}
+	}
 	return nullmeat, false
 }
 
 //need return value in case we get misaskedfor meat
-func (person *Person) RemoveMeat(meat *Meat) bool {
+func (person *Person) RemoveMeat(meat *MeatPiece) bool {
 	for meatIndex := range person.State.MeatBag {
 		if person.State.MeatBag[i] == meat {
 			person.State.MeatBag = append(person.State.MeatBag[:meatIndex], person.State.MeatBag[meatIndex+1:]...)
-			person.State.Meat -= meat.Meat
+			person.State.MeatTotal -= meat.Meat
 			return true
 		}
 	}
