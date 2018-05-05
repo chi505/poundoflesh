@@ -5,58 +5,6 @@ import "time"
 import "math"
 import "sort"
 
-var MAXMEAT = 512.0
-var NUMPEOPLE = 20
-var MEATDEC = 5
-
-type Person struct {
-	Name  string
-	State PersonalState
-	ID    int
-}
-
-type PersonalState struct {
-	Meat     int //quantity
-	Altruism int //Will be generous with probability (1 + exp(-altruism - meatdelta))^-1
-	MeatBag  []MeatPiece
-	Birthday int
-}
-
-type MeatPiece struct {
-	Name      string //this is outside of Data because used as key into various things
-	Data      MeatData
-	Meat      int
-	OrigOwner string
-}
-
-type MeatData struct {
-	Description string
-}
-
-type WorldState struct {
-	Params     PoundOFleshParams
-	People     []*Person
-	Count      int
-	Assets     TextAssets
-	PersonSpec map[string]MeatSpec
-}
-
-type MeatSpec struct {
-	Count        int
-	MeanInitMeat int
-}
-
-type PoundOFleshParams struct {
-	MeatLossFrac           float64
-	PerRoundLossFrac       float64
-	NewEntrantMeanMeat     int
-	NewEntrantMeanAltruism int
-	UpdateProbPerRound     float64
-}
-
-type TextAssets struct {
-	Organs map[string][]MeatData
-}
 
 func (world *WorldState) initializeState() {
 	now := time.Now()
@@ -94,25 +42,82 @@ func (world *WorldState) updateState() {
 			world.People[i] = world.MakeNewPerson(i) // could do this in MassageMeat but making replacement more explicit
 		}
 	}
+	if rand.Float32() < world.Params.UpdateProbPerRound {
+		world.Params.JitterParams()
+	}
 
 	sort.Slice(world.People, func(i, j int) bool { return len(world.People[i].State.MeatBag) > len(world.People[j].State.MeatBag) })
 }
 
+func (params *PoundOFleshParams) JitterParams () {
+	params.MeatLossFrac += ClampF32(rand.NormFloat64() * 0.02, 1, 0)
+	params.PerRoundLossFrac += ClampF32(rand.NormFloat64() * 0.05, 1, 0)
+}
+
 func (world *WorldState) interact(agent *Person, patient *Person) {
-	meatIndex := agent.PullAMeatRequest(patient.State)
-	if patient.WouldAcceptOfferFrom(agent.State, &patient.State.MeatBag[meatIndex]) {
-		agent.State.MeatBag = append(agent.State.MeatBag, patient.State.MeatBag[meatIndex])
-		//THESE LINES MUST BE IN THIS ORDER
-		patient.State.MeatBag = append(patient.State.MeatBag[:meatIndex], patient.State.MeatBag[meatIndex+1:]...)
+	meat := agent.PullAMeatRequest(patient.State)
+	if patient.WouldAcceptOfferFrom(agent.State, meat) {
+		patient.GiveMeatTo(agent, meat)
 	}
 }
 
-func (agent *Person) PullAMeatRequest(ps PersonalState) int {
-	return rand.Intn(len(ps.MeatBag))
+func (agent *Person) PullAMeatRequest(ps PersonalState) *MeatPiece {
+	return ps.MeatBag[rand.Intn(len(ps.MeatBag))]
+	index := rand.Intn(ps.Meat)
 }
 
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, request *MeatPiece) bool {
 	return true
+}
+//insertion can't logically be impossible
+func (person *Person) AddMeat(meat *Meat) {
+	person.State.MeatBag = append(person.State.MeatBag, meat)
+	person.State.Meat += meat.Meat
+}
+
+func (person *Person) GetMeatIndex(meat *Meat) (int, bool) {
+		for meatIndex := range person.State.MeatBag {
+			if person.State.MeatBag[i] == meat {
+				return meatIndex, true
+			}
+		}
+	return 0, false
+}
+
+func (person *Person) GetMeatByWeight(weight int) (*Meat, bool) {
+	sum := 0
+	nullmeat = MeatPiece {}
+	meatbag := person.State.MeatBag
+			for meatIndex := range meatbag {
+				sum += meatbag[meatIndex].Meat
+			if sum >= weight {
+				return meatbag[MeatIndex], true
+			}
+		}
+	return nullmeat, false
+}
+
+//need return value in case we get misaskedfor meat
+func (person *Person) RemoveMeat(meat *Meat) bool {
+	for meatIndex := range person.State.MeatBag {
+		if person.State.MeatBag[i] == meat {
+			person.State.MeatBag = append(person.State.MeatBag[:meatIndex], person.State.MeatBag[meatIndex+1:]...)
+			person.State.Meat -= meat.Meat
+			return true
+		}
+	}
+	return false
+}
+
+//It's easier to not lose the meat mid-transfer if it's passed in as an argument
+func (giver *Person) GiveMeatTo(recip *Person, meat *MeatPiece) bool {
+	meat, valid = giver.GetMeatByWeight()
+	if valid {
+		recip.AddMeat(meat)
+		giver.RemoveMeat(meat) //don't need to check return because GetMeatByWeight already does
+		return true
+	}
+	return false
 }
 
 func (world *WorldState) MassageMeat(p *Person) int {
@@ -162,4 +167,8 @@ func MakeNewName() string {
 
 func GetNextNameChar() string {
 	return string(rand.Intn(126-33) + 33)
+}
+
+func ClampF32(input float32, upper float32, lower float32) float32 {
+	return math.Min(upper, Math.Max(lower, input))
 }

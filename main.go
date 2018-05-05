@@ -30,9 +30,6 @@ func main() {
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
 
-	//	router.GET("/", func(c *gin.Context) {
-	//		c.String(http.StatusOK, "Hello World")
-	//	})
 	router.GET("/", func(c *gin.Context) {
 		genResponse(c, theWorld)
 		theWorld.updateState()
