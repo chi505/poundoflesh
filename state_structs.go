@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 var MAXMEAT = 512.0
 var NUMPEOPLE = 20
 var MEATDEC = 5
