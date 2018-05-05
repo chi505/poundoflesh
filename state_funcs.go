@@ -173,5 +173,5 @@ func GetNextNameChar() string {
 }
 
 func ClampF64(input float64, upper float64, lower float64) float64 {
-	return math.Min(upper, Math.Max(lower, input))
+	return math.Min(upper, math.Max(lower, input))
 }
