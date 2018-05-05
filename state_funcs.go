@@ -49,8 +49,8 @@ func (world *WorldState) updateState() {
 }
 
 func (params *PoundOFleshParams) JitterParams() {
-	params.MeatLossFrac += ClampF32(float32(rand.NormFloat32())*0.02, 1, 0)
-	params.PerRoundLossFrac += ClampF32(float32(rand.NormFloat64())*0.05, 1, 0)
+	params.MeatLossFrac += ClampF64(rand.NormFloat32()*0.02, 1, 0)
+	params.PerRoundLossFrac += ClampF64(rand.NormFloat64()*0.05, 1, 0)
 }
 
 func (world *WorldState) interact(agent *Person, patient *Person) {
@@ -60,9 +60,13 @@ func (world *WorldState) interact(agent *Person, patient *Person) {
 	}
 }
 
-func (agent *Person) PullAMeatRequest(ps PersonalState) *MeatPiece {
-	return ps.MeatBag[rand.Intn(len(ps.MeatBag))]
-	index := rand.Intn(ps.Meat)
+func (agent *Person) PullAMeatRequest(patient *Person) *MeatPiece {
+	index := rand.Intn(patient.PersonalState.MeatTotal)
+	meat, valid = patient.GetMeatByWeight(index)
+	if valid {
+		return meat
+	}
+	return nil
 }
 
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, request *MeatPiece) bool {
@@ -169,6 +173,6 @@ func GetNextNameChar() string {
 	return string(rand.Intn(126-33) + 33)
 }
 
-func ClampF32(input float32, upper float32, lower float32) float32 {
+func ClampF64(input float64, upper float64, lower float64) float64 {
 	return math.Min(upper, Math.Max(lower, input))
 }
