@@ -81,7 +81,7 @@ func (person *Person) AddMeat(meat *MeatPiece) {
 
 func (person *Person) GetMeatIndex(meat *MeatPiece) (int, bool) {
 	for meatIndex := range person.State.MeatBag {
-		if person.State.MeatBag[i] == meat {
+		if person.State.MeatBag[meatIndex] == meat {
 			return meatIndex, true
 		}
 	}
@@ -90,21 +90,20 @@ func (person *Person) GetMeatIndex(meat *MeatPiece) (int, bool) {
 
 func (person *Person) GetMeatByWeight(weight int) (*MeatPiece, bool) {
 	sum := 0
-	nullmeat = MeatPiece{}
 	meatbag := person.State.MeatBag
 	for meatIndex := range meatbag {
 		sum += meatbag[meatIndex].Meat
 		if sum >= weight {
-			return meatbag[MeatIndex], true
+			return meatbag[meatIndex], true
 		}
 	}
-	return nullmeat, false
+	return nil, false
 }
 
 //need return value in case we get misaskedfor meat
 func (person *Person) RemoveMeat(meat *MeatPiece) bool {
 	for meatIndex := range person.State.MeatBag {
-		if person.State.MeatBag[i] == meat {
+		if person.State.MeatBag[meatIndex] == meat {
 			person.State.MeatBag = append(person.State.MeatBag[:meatIndex], person.State.MeatBag[meatIndex+1:]...)
 			person.State.MeatTotal -= meat.Meat
 			return true
@@ -115,10 +114,10 @@ func (person *Person) RemoveMeat(meat *MeatPiece) bool {
 
 //It's easier to not lose the meat mid-transfer if it's passed in as an argument
 func (giver *Person) GiveMeatTo(recip *Person, meat *MeatPiece) bool {
-	meat, valid := giver.GetMeatByWeight()
+	_, valid := giver.GetMeatIndex()
 	if valid {
 		recip.AddMeat(meat)
-		giver.RemoveMeat(meat) //don't need to check return because GetMeatByWeight already does
+		giver.RemoveMeat(meat) //don't need to check return because GetMeatIndex already does
 		return true
 	}
 	return false
