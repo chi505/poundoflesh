@@ -41,7 +41,7 @@ func (world *WorldState) updateState() {
 			world.People[i] = world.MakeNewPerson(i) // could do this in MassageMeat but making replacement more explicit
 		}
 	}
-	if rand.Float32() < world.Params.UpdateProbPerRound {
+	if rand.Float64() < world.Params.UpdateProbPerRound {
 		world.Params.JitterParams()
 	}
 
@@ -49,20 +49,20 @@ func (world *WorldState) updateState() {
 }
 
 func (params *PoundOFleshParams) JitterParams() {
-	params.MeatLossFrac += ClampF64(rand.NormFloat32()*0.02, 1, 0)
+	params.MeatLossFrac += ClampF64(rand.NormFloat64()*0.02, 1, 0)
 	params.PerRoundLossFrac += ClampF64(rand.NormFloat64()*0.05, 1, 0)
 }
 
 func (world *WorldState) interact(agent *Person, patient *Person) {
-	meat := agent.PullAMeatRequest(patient.State)
+	meat := agent.PullAMeatRequest(patient)
 	if patient.WouldAcceptOfferFrom(agent.State, meat) {
 		patient.GiveMeatTo(agent, meat)
 	}
 }
 
 func (agent *Person) PullAMeatRequest(patient *Person) *MeatPiece {
-	index := rand.Intn(patient.PersonalState.MeatTotal)
-	meat, valid = patient.GetMeatByWeight(index)
+	index := rand.Intn(patient.State.MeatTotal)
+	meat, valid := patient.GetMeatByWeight(index)
 	if valid {
 		return meat
 	}
@@ -115,7 +115,7 @@ func (person *Person) RemoveMeat(meat *MeatPiece) bool {
 
 //It's easier to not lose the meat mid-transfer if it's passed in as an argument
 func (giver *Person) GiveMeatTo(recip *Person, meat *MeatPiece) bool {
-	meat, valid = giver.GetMeatByWeight()
+	meat, valid := giver.GetMeatByWeight()
 	if valid {
 		recip.AddMeat(meat)
 		giver.RemoveMeat(meat) //don't need to check return because GetMeatByWeight already does
