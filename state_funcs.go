@@ -140,9 +140,9 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 	noob := &Person{
 		Name: MakeNewName(),
 		State: PersonalState{
-			Meat:     rand.Intn(int(world.Params.NewEntrantMeanMeat * 2)),
-			MeatBag:  make([]*MeatPiece, 0),
-			Birthday: world.Count},
+			MeatTotal: rand.Intn(int(world.Params.NewEntrantMeanMeat * 2)),
+			MeatBag:   make([]*MeatPiece, 0),
+			Birthday:  world.Count},
 		ID: id}
 	noob.InsertMeat(world.Assets, world.PersonSpec)
 	return noob
@@ -152,13 +152,14 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 func (noob *Person) InsertMeat(assets TextAssets, specs map[string]MeatSpec) {
 	for name, spec := range specs {
 		for i := 0; i < spec.Count; i++ {
-			noob.State.MeatBag = append(noob.State.MeatBag,
-				*MeatPiece{
-					Name: name,
-					Data: MeatData{
-						Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description},
-					Meat:      int(math.Min(float64(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat)), MAXMEAT)),
-					OrigOwner: noob.Name})
+			newmeat := MeatPiece{
+				Name: name,
+				Data: MeatData{
+					Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description},
+				Meat:      int(math.Min(float64(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat)), MAXMEAT)),
+				OrigOwner: noob.Name}
+			noob.State.MeatBag = append(noob.State.MeatBag, newmeat)
+
 		}
 	}
 }
