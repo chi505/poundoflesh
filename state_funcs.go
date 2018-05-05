@@ -152,7 +152,7 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 func (noob *Person) InsertMeat(assets TextAssets, specs map[string]MeatSpec) {
 	for name, spec := range specs {
 		for i := 0; i < spec.Count; i++ {
-			newmeat := MeatPiece{
+			newmeat := &MeatPiece{
 				Name: name,
 				Data: MeatData{
 					Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description},
