@@ -114,7 +114,7 @@ func (person *Person) RemoveMeat(meat *MeatPiece) bool {
 
 //It's easier to not lose the meat mid-transfer if it's passed in as an argument
 func (giver *Person) GiveMeatTo(recip *Person, meat *MeatPiece) bool {
-	_, valid := giver.GetMeatIndex()
+	_, valid := giver.GetMeatIndex(meat)
 	if valid {
 		recip.AddMeat(meat)
 		giver.RemoveMeat(meat) //don't need to check return because GetMeatIndex already does
@@ -141,7 +141,6 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 		Name: MakeNewName(),
 		State: PersonalState{
 			Meat:     rand.Intn(int(world.Params.NewEntrantMeanMeat * 2)),
-			Altruism: rand.Intn(world.Params.NewEntrantMeanAltruism * 2),
 			MeatBag:  make([]*MeatPiece, 0),
 			Birthday: world.Count},
 		ID: id}
