@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"states"
 )
 
 func GenBody(c *gin.Context, world WorldState) {

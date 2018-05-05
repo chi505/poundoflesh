@@ -4,6 +4,7 @@ import "math/rand"
 import "time"
 import "math"
 import "sort"
+import "states"
 
 
 func (world *WorldState) initializeState() {
