@@ -20,7 +20,7 @@ type MentalState struct {
 
 type PersonalState struct {
 	MeatTotal int //quantity
-	MeatBag   []MeatPiece
+	MeatBag   []*MeatPiece
 	Birthday  int
 }
 
