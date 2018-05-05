@@ -142,7 +142,7 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 		State: PersonalState{
 			Meat:     rand.Intn(int(world.Params.NewEntrantMeanMeat * 2)),
 			Altruism: rand.Intn(world.Params.NewEntrantMeanAltruism * 2),
-			MeatBag:  make([]MeatPiece, 0),
+			MeatBag:  make([]*MeatPiece, 0),
 			Birthday: world.Count},
 		ID: id}
 	noob.InsertMeat(world.Assets, world.PersonSpec)
@@ -154,7 +154,7 @@ func (noob *Person) InsertMeat(assets TextAssets, specs map[string]MeatSpec) {
 	for name, spec := range specs {
 		for i := 0; i < spec.Count; i++ {
 			noob.State.MeatBag = append(noob.State.MeatBag,
-				MeatPiece{
+				*MeatPiece{
 					Name: name,
 					Data: MeatData{
 						Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description},
