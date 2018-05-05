@@ -158,7 +158,7 @@ func (noob *Person) InsertMeat(assets TextAssets, specs map[string]MeatSpec) {
 					Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description},
 				Meat:      int(math.Min(float64(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat)), MAXMEAT)),
 				OrigOwner: noob.Name}
-			noob.State.MeatBag = append(noob.State.MeatBag, *newmeat)
+			noob.State.MeatBag = append(noob.State.MeatBag, newmeat)
 
 		}
 	}
