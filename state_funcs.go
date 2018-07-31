@@ -131,6 +131,7 @@ func (world *WorldState) MassageMeat(p *Person) int {
 	n := len(p.State.MeatBag) - 1
 	count := n + 1
 	for i := range p.State.MeatBag {
+		p.State.MeatTotal -= min(MEATDEC, p.State.MeatBag[n-1])
 		p.State.MeatBag[n-i].Meat -= MEATDEC
 		if p.State.MeatBag[n-i].Meat <= 0 {
 			p.State.MeatBag = append(p.State.MeatBag[:n-i], p.State.MeatBag[n-i+1:]...)
@@ -144,7 +145,7 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 	noob := &Person{
 		Name: MakeNewName(),
 		State: PersonalState{
-			MeatTotal: rand.Intn(int(world.Params.NewEntrantMeanMeat * 2)),
+			MeatTotal: 0,
 			MeatBag:   make([]*MeatPiece, 0),
 			Birthday:  world.Count},
 		ID: id}
@@ -162,8 +163,7 @@ func (noob *Person) InsertMeat(assets TextAssets, specs map[string]MeatSpec) {
 					Description: assets.Organs[name][rand.Intn(len(assets.Organs[name]))].Description},
 				Meat:      int(math.Min(float64(spec.MeanInitMeat/2+rand.Intn(spec.MeanInitMeat)), MAXMEAT)),
 				OrigOwner: noob.Name}
-			noob.State.MeatBag = append(noob.State.MeatBag, newmeat)
-
+			noob.AddMeat(newmeat)
 		}
 	}
 }
