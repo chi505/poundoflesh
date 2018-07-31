@@ -100,7 +100,7 @@ func (person *Person) GetMeatByWeight(weight int) (*MeatPiece, bool) {
 			return meatbag[meatIndex], true
 		}
 	}
-	return nil, false
+	return -1, false
 }
 
 //need return value in case we get misaskedfor meat
