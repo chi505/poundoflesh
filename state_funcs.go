@@ -28,6 +28,9 @@ func (world *WorldState) loadMeatMaps() {
 	world.Assets.Organs["lung"] = append([]MeatData{}, MeatData{Description: "A glistening spongy lung shaped chunk of MEAT."})
 	world.Assets.Organs["lung"] = append(world.Assets.Organs["lung"], MeatData{Description: "A lung shaped sponge meat."})
 
+	world.PersonSpec["liver"] = MeatSpec{Count: 1, MeanInitMeat: int(MAXMEAT / 2)}
+	world.Assets.Organs["liver"] = append([]MeatData{}, MeatData{Description: "It's a liver. Fava bean joke etc."})
+
 }
 
 func (world *WorldState) updateState() {
