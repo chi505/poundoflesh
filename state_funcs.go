@@ -70,7 +70,7 @@ func (agent *Person) PullAMeatRequest(patient *Person) *MeatPiece {
 }
 
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, request *MeatPiece) bool {
-	if (patient.State.MeatTotal > as.MeatTotal) & (len(patient.State.MeatBag) > len(as.MeatBag)) {
+	if (patient.State.MeatTotal > as.MeatTotal) && (len(patient.State.MeatBag) > len(as.MeatBag)) {
 		return true
 	}
 	return false
