@@ -70,7 +70,10 @@ func (agent *Person) PullAMeatRequest(patient *Person) *MeatPiece {
 }
 
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, request *MeatPiece) bool {
-	return true
+	if (patient.State.MeatTotal > as.MeatTotal) & (len(patient.State.MeatBag) > len(as.MeatBag)) {
+		return true
+	}
+	return false
 }
 
 //insertion can't logically be impossible
@@ -85,7 +88,7 @@ func (person *Person) GetMeatIndex(meat *MeatPiece) (int, bool) {
 			return meatIndex, true
 		}
 	}
-	return 0, false
+	return nil, false
 }
 
 func (person *Person) GetMeatByWeight(weight int) (*MeatPiece, bool) {
@@ -113,6 +116,7 @@ func (person *Person) RemoveMeat(meat *MeatPiece) bool {
 }
 
 //It's easier to not lose the meat mid-transfer if it's passed in as an argument
+//WTF does the above mean?
 func (giver *Person) GiveMeatTo(recip *Person, meat *MeatPiece) bool {
 	_, valid := giver.GetMeatIndex(meat)
 	if valid {

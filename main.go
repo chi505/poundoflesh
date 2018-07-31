@@ -23,7 +23,17 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	theWorld = WorldState{Count: 0, Params: PoundOFleshParams{MeatLossFrac: 0.2, PerRoundLossFrac: 0.05, NewEntrantMeanAltruism: 10, NewEntrantMeanMeat: int(MAXMEAT / 10)}, Assets: TextAssets{Organs: map[string][]MeatData{}}, People: make([]*Person, 0), PersonSpec: map[string]MeatSpec{}}
+	theWorld = WorldState{
+		Count: 0,
+		Params: PoundOFleshParams{
+			MeatLossFrac:           0.2,
+			PerRoundLossFrac:       0.05,
+			NewEntrantMeanAltruism: 10,
+			NewEntrantMeanMeat:     int(MAXMEAT / 10)},
+		Assets: TextAssets{
+			Organs: map[string][]MeatData{}},
+		People:     make([]*Person, 0),
+		PersonSpec: map[string]MeatSpec{}}
 	theWorld.initializeState()
 	router := gin.New()
 	router.Use(gin.Logger())
@@ -34,6 +44,8 @@ func main() {
 		genResponse(c, theWorld)
 		theWorld.updateState()
 	})
+	//Is there only one interface with a query param to say what if anything you just did?
+	//I don't hate it.
 
 	router.Run(":" + port)
 }
