@@ -1,6 +1,6 @@
 package main
 
-var MAXMEAT = 512.0
+var MAXMEAT = 128.0
 var NUMPEOPLE = 20
 var MEATDEC = 5
 
