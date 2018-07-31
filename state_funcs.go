@@ -131,7 +131,7 @@ func (world *WorldState) MassageMeat(p *Person) int {
 	n := len(p.State.MeatBag) - 1
 	count := n + 1
 	for i := range p.State.MeatBag {
-		p.State.MeatTotal -= min(MEATDEC, p.State.MeatBag[n-1])
+		p.State.MeatTotal -= math.min(MEATDEC, p.State.MeatBag[n-1])
 		p.State.MeatBag[n-i].Meat -= MEATDEC
 		if p.State.MeatBag[n-i].Meat <= 0 {
 			p.State.MeatBag = append(p.State.MeatBag[:n-i], p.State.MeatBag[n-i+1:]...)
