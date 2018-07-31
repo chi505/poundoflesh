@@ -1,7 +1,7 @@
 package main
 
 var MAXMEAT = 512.0
-var NUMPEOPLE = 2
+var NUMPEOPLE = 20
 var MEATDEC = 5
 
 type Person struct {
