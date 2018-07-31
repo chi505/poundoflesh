@@ -134,7 +134,7 @@ func (world *WorldState) MassageMeat(p *Person) int {
 		p.State.MeatTotal -= MEATDEC
 		p.State.MeatBag[n-i].Meat -= MEATDEC
 		if p.State.MeatBag[n-i].Meat <= 0 {
-			p.State.MeatTotal += p.State.MeatBag[n-i].Meat
+			p.State.MeatTotal -= p.State.MeatBag[n-i].Meat
 			p.State.MeatBag = append(p.State.MeatBag[:n-i], p.State.MeatBag[n-i+1:]...)
 			count--
 		}
