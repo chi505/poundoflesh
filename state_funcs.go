@@ -73,9 +73,10 @@ func (agent *Person) PullAMeatRequest(patient *Person) *MeatPiece {
 }
 
 func (patient *Person) WouldAcceptOfferFrom(as PersonalState, request *MeatPiece) bool {
-	if (patient.State.MeatTotal-as.MeatTotal < patient.State.Mind.Hope) &&
+	if (patient.State.MeatTotal-as.MeatTotal > patient.State.Mind.Hope) &&
 		(request.Meat/patient.State.MeatTotal*100 < patient.State.Mind.Altruism) &&
-		(len(patient.State.MeatBag) > rand.Intn(patient.State.Mind.Fear)) {
+		(len(patient.State.MeatBag) > rand.Intn(patient.State.Mind.Fear)) ||
+		(patient.State.Mind.Caprice > rand.Intn(10)) {
 		return true
 	}
 	return false
@@ -157,7 +158,8 @@ func (world WorldState) MakeNewPerson(id int) *Person {
 			Mind: MentalState{
 				Hope:     5,
 				Altruism: 0,
-				Fear:     3}},
+				Fear:     3,
+				Caprice:  rand.Intn(10)}},
 		ID: id}
 	noob.InsertMeat(world.Assets, world.PersonSpec)
 	return noob

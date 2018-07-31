@@ -14,6 +14,7 @@ type MentalState struct {
 	Fear     int
 	Hope     int
 	Altruism int
+	Caprice  int
 }
 
 type PersonalState struct {
